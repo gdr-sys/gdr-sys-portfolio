@@ -1,101 +1,122 @@
-"use client";
-import type { Locale } from "@/lib/i18n";
-import { getTranslations } from "@/lib/i18n";
+export type Locale = "en" | "it";
 
-export default function HeroSection({
-  locale,
-  heroTitleEn,
-  heroTitleIt,
-  heroSubtitleEn,
-  heroSubtitleIt,
-}: {
-  locale: Locale;
-  heroTitleEn: string;
-  heroTitleIt: string;
-  heroSubtitleEn: string;
-  heroSubtitleIt: string;
-}) {
-  const t = getTranslations(locale);
-  const title = locale === "it" ? heroTitleIt : heroTitleEn;
-  const subtitle = locale === "it" ? heroSubtitleIt : heroSubtitleEn;
+export const translations = {
+  en: {
+    nav: {
+      home: "Home",
+      apps: "Apps",
+      contact: "Contact",
+      support: "Support the Project",
+      admin: "Admin",
+    },
+    hero: {
+      badge: "Open Source Portfolio",
+      cta: "Explore Apps",
+      ctaSecondary: "Support the Project",
+    },
+    filter: {
+      all: "All",
+      status: "Status",
+      published: "Published",
+      comingSoon: "Coming Soon",
+    },
+    app: {
+      openApp: "Open App",
+      buyNow: "Buy Now",
+      comingSoon: "Coming Soon",
+      inDevelopment: "In Development",
+      free: "Free",
+      featured: "Featured",
+      languages: "Languages",
+      targetAudience: "For",
+      categories: "Categories",
+      backToApps: "Back to Apps",
+      viewProject: "View Project",
+      gallery: "Gallery",
+    },
+    contact: {
+      title: "Get in Touch",
+      subtitle: "Have a question, suggestion, or just want to say hello? Send us a message!",
+      name: "Your Name",
+      email: "Your Email",
+      subject: "Subject",
+      message: "Message",
+      send: "Send Message",
+      success: "Message sent successfully!",
+      error: "Error sending message. Please try again.",
+      namePlaceholder: "John Doe",
+      emailPlaceholder: "john@example.com",
+      subjectPlaceholder: "What's this about?",
+      messagePlaceholder: "Tell us what's on your mind...",
+    },
+    support: {
+      title: "Support the Project",
+      subtitle: "If you enjoy these tools, consider buying me a coffee!",
+    },
+    footer: {
+      rights: "All rights reserved.",
+      madeWith: "Made with ❤️ by gdr-sys",
+    },
+  },
+  it: {
+    nav: {
+      home: "Home",
+      apps: "App",
+      contact: "Contatti",
+      support: "Supporta il Progetto",
+      admin: "Admin",
+    },
+    hero: {
+      badge: "Portfolio Open Source",
+      cta: "Esplora le App",
+      ctaSecondary: "Supporta il Progetto",
+    },
+    filter: {
+      all: "Tutte",
+      status: "Stato",
+      published: "Pubblicate",
+      comingSoon: "In Arrivo",
+    },
+    app: {
+      openApp: "Apri l'App",
+      buyNow: "Acquista",
+      comingSoon: "In Arrivo",
+      inDevelopment: "In Sviluppo",
+      free: "Gratis",
+      featured: "In Evidenza",
+      languages: "Lingue",
+      targetAudience: "Per",
+      categories: "Categorie",
+      backToApps: "Torna alle App",
+      viewProject: "Vedi Progetto",
+      gallery: "Galleria",
+    },
+    contact: {
+      title: "Contattaci",
+      subtitle: "Hai una domanda, un suggerimento o vuoi solo salutare? Mandaci un messaggio!",
+      name: "Il tuo Nome",
+      email: "La tua Email",
+      subject: "Oggetto",
+      message: "Messaggio",
+      send: "Invia Messaggio",
+      success: "Messaggio inviato con successo!",
+      error: "Errore nell'invio. Riprova.",
+      namePlaceholder: "Mario Rossi",
+      emailPlaceholder: "mario@esempio.com",
+      subjectPlaceholder: "Di cosa si tratta?",
+      messagePlaceholder: "Dicci cosa hai in mente...",
+    },
+    support: {
+      title: "Supporta il Progetto",
+      subtitle: "Se ti piacciono questi strumenti, offrimi un caffè!",
+    },
+    footer: {
+      rights: "Tutti i diritti riservati.",
+      madeWith: "Fatto con ❤️ da gdr-sys",
+    },
+  },
+} as const;
 
-  return (
-    <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20 pb-10">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url(/images/hero-bg.jpg)" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy-950/80 via-navy-950/60 to-navy-950" />
-        {/* Animated orbs */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl animate-float" />
-        <div
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-cyan-500/15 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: "3s" }}
-        />
-      </div>
-
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        <h1
-          className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight mb-4 animate-fade-in-up"
-          style={{ animationDelay: "0.1s" }}
-        >
-          <span className="bg-gradient-to-r from-white via-brand-200 to-cyan-200 bg-clip-text text-transparent">
-            {title}
-          </span>
-        </h1>
-
-        <p
-          className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-6 animate-fade-in-up"
-          style={{ animationDelay: "0.2s" }}
-        >
-          {subtitle}
-        </p>
-
-        <div
-          className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in-up"
-          style={{ animationDelay: "0.3s" }}
-        >
-          <a
-            href="#apps"
-            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold hover:shadow-lg hover:shadow-brand-500/25 hover:-translate-y-0.5 transition-all"
-          >
-            {t.hero.cta}
-          </a>
-          <a
-            href="#contact"
-            className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 hover:-translate-y-0.5 transition-all"
-          >
-            {t.hero.ctaSecondary}
-          </a>
-        </div>
-
-        {/* Stats */}
-        <div
-          className="mt-8 grid grid-cols-3 gap-6 max-w-lg mx-auto animate-fade-in-up"
-          style={{ animationDelay: "0.4s" }}
-        >
-          <div>
-            <div className="text-2xl sm:text-3xl font-bold text-brand-400">10+</div>
-            <div className="text-xs text-gray-500 mt-1">
-              {locale === "it" ? "App" : "Apps"}
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl sm:text-3xl font-bold text-cyan-400">9</div>
-            <div className="text-xs text-gray-500 mt-1">
-              {locale === "it" ? "Categorie" : "Categories"}
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl sm:text-3xl font-bold text-emerald-400">3</div>
-            <div className="text-xs text-gray-500 mt-1">
-              {locale === "it" ? "In arrivo" : "Coming soon"}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+export function getTranslations(locale: Locale) {
+  return translations[locale] || translations.en;
 }
