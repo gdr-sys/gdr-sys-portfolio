@@ -23,7 +23,7 @@ export default function Navbar({
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3 group">
             <Image
-              src="/images/logo.png"
+              src="/images/logo.svg"
               alt="gdr-sys"
               width={36}
               height={36}
