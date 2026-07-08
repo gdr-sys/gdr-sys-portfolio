@@ -20,7 +20,7 @@ export default function HeroSection({
   const subtitle = locale === "it" ? heroSubtitleIt : heroSubtitleEn;
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden pt-20 pb-10">
       {/* Background */}
       <div className="absolute inset-0">
         <div
@@ -37,10 +37,8 @@ export default function HeroSection({
       </div>
 
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-
-
         <h1
-          className="text-4xl sm:text-5xl md:text-7xl font-black leading-tight mb-6 animate-fade-in-up"
+          className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight mb-4 animate-fade-in-up"
           style={{ animationDelay: "0.1s" }}
         >
           <span className="bg-gradient-to-r from-white via-brand-200 to-cyan-200 bg-clip-text text-transparent">
@@ -49,25 +47,25 @@ export default function HeroSection({
         </h1>
 
         <p
-          className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 animate-fade-in-up"
+          className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mb-6 animate-fade-in-up"
           style={{ animationDelay: "0.2s" }}
         >
           {subtitle}
         </p>
 
         <div
-          className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up"
+          className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in-up"
           style={{ animationDelay: "0.3s" }}
         >
           <a
             href="#apps"
-            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold text-lg hover:shadow-lg hover:shadow-brand-500/25 hover:-translate-y-0.5 transition-all"
+            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold hover:shadow-lg hover:shadow-brand-500/25 hover:-translate-y-0.5 transition-all"
           >
             {t.hero.cta}
           </a>
           <a
             href="#contact"
-            className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-white font-semibold text-lg hover:bg-white/10 hover:-translate-y-0.5 transition-all"
+            className="px-6 py-3 rounded-2xl bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 hover:-translate-y-0.5 transition-all"
           >
             {t.hero.ctaSecondary}
           </a>
@@ -75,7 +73,7 @@ export default function HeroSection({
 
         {/* Stats */}
         <div
-          className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto animate-fade-in-up"
+          className="mt-8 grid grid-cols-3 gap-6 max-w-lg mx-auto animate-fade-in-up"
           style={{ animationDelay: "0.4s" }}
         >
           <div>
@@ -85,17 +83,15 @@ export default function HeroSection({
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-bold text-cyan-400">
-              {locale === "it" ? "Gratis" : "Free"}
-            </div>
+            <div className="text-2xl sm:text-3xl font-bold text-cyan-400">9</div>
             <div className="text-xs text-gray-500 mt-1">
-              {locale === "it" ? "Open Source" : "Open Source"}
+              {locale === "it" ? "Categorie" : "Categories"}
             </div>
           </div>
           <div>
-            <div className="text-2xl sm:text-3xl font-bold text-emerald-400">5+</div>
+            <div className="text-2xl sm:text-3xl font-bold text-emerald-400">3</div>
             <div className="text-xs text-gray-500 mt-1">
-              {locale === "it" ? "Categorie" : "Categories"}
+              {locale === "it" ? "In arrivo" : "Coming soon"}
             </div>
           </div>
         </div>
