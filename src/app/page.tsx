@@ -1,122 +1,160 @@
-export type Locale = "en" | "it";
+"use client";
+import { useEffect, useState, useMemo } from "react";
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import AppCard from "@/components/AppCard";
+import FilterBar from "@/components/FilterBar";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
+import CookieBanner from "@/components/CookieBanner";
+import type { Locale } from "@/lib/i18n";
+import type { AppData, CategoryData, TargetData } from "@/components/AppCard";
 
-export const translations = {
-  en: {
-    nav: {
-      home: "Home",
-      apps: "Apps",
-      contact: "Contact",
-      support: "Support the Project",
-      admin: "Admin",
-    },
-    hero: {
-      badge: "Open Source Portfolio",
-      cta: "Explore Apps",
-      ctaSecondary: "Support the Project",
-    },
-    filter: {
-      all: "All",
-      status: "Status",
-      published: "Published",
-      comingSoon: "Coming Soon",
-    },
-    app: {
-      openApp: "Open App",
-      buyNow: "Buy Now",
-      comingSoon: "Coming Soon",
-      inDevelopment: "In Development",
-      free: "Free",
-      featured: "Featured",
-      languages: "Languages",
-      targetAudience: "For",
-      categories: "Categories",
-      backToApps: "Back to Apps",
-      viewProject: "View Project",
-      gallery: "Gallery",
-    },
-    contact: {
-      title: "Get in Touch",
-      subtitle: "Have a question, suggestion, or just want to say hello? Send us a message!",
-      name: "Your Name",
-      email: "Your Email",
-      subject: "Subject",
-      message: "Message",
-      send: "Send Message",
-      success: "Message sent successfully!",
-      error: "Error sending message. Please try again.",
-      namePlaceholder: "John Doe",
-      emailPlaceholder: "john@example.com",
-      subjectPlaceholder: "What's this about?",
-      messagePlaceholder: "Tell us what's on your mind...",
-    },
-    support: {
-      title: "Support the Project",
-      subtitle: "If you enjoy these tools, consider buying me a coffee!",
-    },
-    footer: {
-      rights: "All rights reserved.",
-      madeWith: "Made with ❤️ by gdr-sys",
-    },
-  },
-  it: {
-    nav: {
-      home: "Home",
-      apps: "App",
-      contact: "Contatti",
-      support: "Supporta il Progetto",
-      admin: "Admin",
-    },
-    hero: {
-      badge: "Portfolio Open Source",
-      cta: "Esplora le App",
-      ctaSecondary: "Supporta il Progetto",
-    },
-    filter: {
-      all: "Tutte",
-      status: "Stato",
-      published: "Pubblicate",
-      comingSoon: "In Arrivo",
-    },
-    app: {
-      openApp: "Apri l'App",
-      buyNow: "Acquista",
-      comingSoon: "In Arrivo",
-      inDevelopment: "In Sviluppo",
-      free: "Gratis",
-      featured: "In Evidenza",
-      languages: "Lingue",
-      targetAudience: "Per",
-      categories: "Categorie",
-      backToApps: "Torna alle App",
-      viewProject: "Vedi Progetto",
-      gallery: "Galleria",
-    },
-    contact: {
-      title: "Contattaci",
-      subtitle: "Hai una domanda, un suggerimento o vuoi solo salutare? Mandaci un messaggio!",
-      name: "Il tuo Nome",
-      email: "La tua Email",
-      subject: "Oggetto",
-      message: "Messaggio",
-      send: "Invia Messaggio",
-      success: "Messaggio inviato con successo!",
-      error: "Errore nell'invio. Riprova.",
-      namePlaceholder: "Mario Rossi",
-      emailPlaceholder: "mario@esempio.com",
-      subjectPlaceholder: "Di cosa si tratta?",
-      messagePlaceholder: "Dicci cosa hai in mente...",
-    },
-    support: {
-      title: "Supporta il Progetto",
-      subtitle: "Se ti piacciono questi strumenti, offrimi un caffè!",
-    },
-    footer: {
-      rights: "Tutti i diritti riservati.",
-      madeWith: "Fatto con ❤️ da gdr-sys",
-    },
-  },
-} as const;
+export default function HomePage() {
+  const [locale, setLocale] = useState<Locale>("en");
+  const [apps, setApps] = useState<AppData[]>([]);
+  const [categories, setCategories] = useState<CategoryData[]>([]);
+  const [targets, setTargets] = useState<TargetData[]>([]);
+  const [settings, setSettings] = useState<Record<string, string>>({});
+  const [selectedCat, setSelectedCat] = useState("");
+  const [selectedTarget, setSelectedTarget] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [loaded, setLoaded] = useState(false);
 
-export function getTranslations(locale: Locale) {
-  return translations[locale] || translations.en;
+  useEffect(() => {
+    const lang = navigator.language.toLowerCase();
+    if (lang.startsWith("it")) setLocale("it");
+    else setLocale("en");
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/apps")
+      .then((r) => r.json())
+      .then((data) => {
+        setApps(data.apps);
+        setCategories(data.categories);
+        setTargets(data.targets);
+        setSettings(data.settings);
+        setLoaded(true);
+      })
+      .catch(console.error);
+  }, []);
+
+  const filtered = useMemo(() => {
+    return apps.filter((app) => {
+      if (app.status === "coming_soon" && !app.showPreview) return false;
+      if (selectedStatus && app.status !== selectedStatus) return false;
+
+      if (selectedCat) {
+        const cat = categories.find((c) => c.slug === selectedCat);
+        if (cat) {
+          const ids = app.categoryIds.split(",").map(Number);
+          if (!ids.includes(cat.id)) return false;
+        }
+      }
+
+      if (selectedTarget) {
+        const tgt = targets.find((t) => t.slug === selectedTarget);
+        if (tgt) {
+          const ids = app.targetAudienceIds.split(",").map(Number);
+          if (!ids.includes(tgt.id)) return false;
+        }
+      }
+
+      return true;
+    });
+  }, [apps, categories, targets, selectedCat, selectedTarget, selectedStatus]);
+
+  if (!loaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-brand-500/30 border-t-brand-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <Navbar
+        locale={locale}
+        onLocaleChange={setLocale}
+        kofiUrl={settings.kofi_url}
+      />
+
+      <HeroSection
+        locale={locale}
+        heroTitleEn={settings.hero_title_en || "WebApps for RPG, Sports & More"}
+        heroTitleIt={settings.hero_title_it || "WebApp per GDR, Sport & Altro"}
+        heroSubtitleEn={settings.hero_subtitle_en || "Modern digital tools for players, Dungeon Masters, sports clubs, coaches, and everyone."}
+        heroSubtitleIt={settings.hero_subtitle_it || "Strumenti digitali moderni per giocatori, Dungeon Master, società sportive, allenatori e tutti."}
+        stat1Value={settings.stat1_value || "10+"}
+        stat1LabelEn={settings.stat1_label_en || "Apps"}
+        stat1LabelIt={settings.stat1_label_it || "App"}
+        stat2Value={settings.stat2_value || "9"}
+        stat2LabelEn={settings.stat2_label_en || "Categories"}
+        stat2LabelIt={settings.stat2_label_it || "Categorie"}
+        stat3Value={settings.stat3_value || "3"}
+        stat3LabelEn={settings.stat3_label_en || "Coming soon"}
+        stat3LabelIt={settings.stat3_label_it || "In arrivo"}
+      />
+
+      {/* Apps Grid - SPAZIO NOTEVOLMENTE RIDOTTO QUI DA PY-24 A PY-8 */}
+      <section id="apps" className="py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-3">
+              <span className="bg-gradient-to-r from-brand-400 to-cyan-400 bg-clip-text text-transparent">
+                {locale === "it" ? "Le Nostre App" : "Our Apps"}
+              </span>
+            </h2>
+            <p className="text-gray-400 max-w-xl mx-auto text-sm">
+              {locale === "it"
+                ? "Esplora la nostra collezione di strumenti digitali"
+                : "Explore our collection of digital tools"}
+            </p>
+          </div>
+
+          <div className="mb-8">
+            <FilterBar
+              locale={locale}
+              categories={categories}
+              targets={targets}
+              selectedCat={selectedCat}
+              selectedTarget={selectedTarget}
+              selectedStatus={selectedStatus}
+              onCatChange={setSelectedCat}
+              onTargetChange={setSelectedTarget}
+              onStatusChange={setSelectedStatus}
+            />
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((app, i) => (
+              <div
+                key={app.id}
+                className="animate-fade-in-up"
+                style={{ animationDelay: `${i * 0.05}s` }}
+              >
+                <AppCard app={app} categories={categories} locale={locale} />
+              </div>
+            ))}
+          </div>
+
+          {filtered.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">
+                {locale === "it"
+                  ? "Nessuna app trovata con questi filtri"
+                  : "No apps found with these filters"}
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <ContactSection locale={locale} kofiUrl={settings.kofi_url} />
+      <Footer locale={locale} />
+      <CookieBanner locale={locale} />
+    </>
+  );
 }
