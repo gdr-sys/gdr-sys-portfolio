@@ -383,7 +383,7 @@ export default function AdminPage() {
         )}
 
         {/* ════════ IMPOSTAZIONI ════════ */}
-        {tab === "settings" && (
+                {tab === "settings" && (
           <div className="max-w-2xl">
             <h2 className="text-2xl font-bold mb-6">Impostazioni Sito</h2>
             <div className="space-y-4">
@@ -392,6 +392,29 @@ export default function AdminPage() {
               <I l="Titolo Hero (IT)" v={cfg.hero_title_it || ""} s={v => setCfg({ ...cfg, hero_title_it: v })} />
               <T l="Sottotitolo Hero (EN)" v={cfg.hero_subtitle_en || ""} s={v => setCfg({ ...cfg, hero_subtitle_en: v })} />
               <T l="Sottotitolo Hero (IT)" v={cfg.hero_subtitle_it || ""} s={v => setCfg({ ...cfg, hero_subtitle_it: v })} />
+
+              <div className="pt-4 mt-4 border-t border-white/10">
+                <h3 className="text-lg font-semibold mb-3 text-brand-300">📊 Statistiche Hero</h3>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <I l="Stat 1 - Valore" v={cfg.stat1_value || ""} s={v => setCfg({ ...cfg, stat1_value: v })} p="10+" />
+                <I l="Stat 1 - Label EN" v={cfg.stat1_label_en || ""} s={v => setCfg({ ...cfg, stat1_label_en: v })} p="Apps" />
+                <I l="Stat 1 - Label IT" v={cfg.stat1_label_it || ""} s={v => setCfg({ ...cfg, stat1_label_it: v })} p="App" />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <I l="Stat 2 - Valore" v={cfg.stat2_value || ""} s={v => setCfg({ ...cfg, stat2_value: v })} p="9" />
+                <I l="Stat 2 - Label EN" v={cfg.stat2_label_en || ""} s={v => setCfg({ ...cfg, stat2_label_en: v })} p="Categories" />
+                <I l="Stat 2 - Label IT" v={cfg.stat2_label_it || ""} s={v => setCfg({ ...cfg, stat2_label_it: v })} p="Categorie" />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <I l="Stat 3 - Valore" v={cfg.stat3_value || ""} s={v => setCfg({ ...cfg, stat3_value: v })} p="3" />
+                <I l="Stat 3 - Label EN" v={cfg.stat3_label_en || ""} s={v => setCfg({ ...cfg, stat3_label_en: v })} p="Coming soon" />
+                <I l="Stat 3 - Label IT" v={cfg.stat3_label_it || ""} s={v => setCfg({ ...cfg, stat3_label_it: v })} p="In arrivo" />
+              </div>
+
               <button onClick={saveCfg} className="px-6 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-semibold mt-2">Salva Impostazioni</button>
             </div>
           </div>
